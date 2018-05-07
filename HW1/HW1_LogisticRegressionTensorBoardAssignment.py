@@ -41,7 +41,7 @@ with tf.name_scope('model') as scope:
     # Declare model operations
     model_output = tf.add(tf.matmul(x, A), b)
 
-print(model_output)
+print(FLAGS.learning_rate)
 
 # Declare loss function
 with tf.name_scope('loss') as scope:
@@ -82,5 +82,5 @@ with tf.Session() as sess:
         summary = sess.run(merged, feed_dict={x: data_test, y: data_test_label})
         test_writer.add_summary(summary, i)
 
-    writer = tf.summary.FileWriter(FLAGS.summary_dir, sess.merged)
+    writer = tf.summary.FileWriter(FLAGS.summary_dir, sess.graph)
 
