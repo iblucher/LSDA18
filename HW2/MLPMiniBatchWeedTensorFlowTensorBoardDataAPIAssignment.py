@@ -15,7 +15,7 @@ import tensorflow as tf
 flags = tf.app.flags
 FLAGS = flags.FLAGS
 flags.DEFINE_string('summary_dir', '/tmp/MLPMiniLog', 'directory to put the summary data')
-flags.DEFINE_string('data_dir', '../data', 'directory with data')
+flags.DEFINE_string('data_dir', 'data', 'directory with data')
 flags.DEFINE_integer('max_iter', 7500, 'number of iterations')
 flags.DEFINE_integer('max_epochs', 1000, 'number of epochs')
 flags.DEFINE_integer('batch_size', 64, 'batch size')
@@ -23,6 +23,8 @@ flags.DEFINE_integer('no_hidden1', 64, 'size of first hidden layer')
 flags.DEFINE_integer('no_hidden2', 64, 'size of second hidden layer')
 flags.DEFINE_float('lr', 100, 'initial learning rate')
 flags.DEFINE_integer('prefetch', 1, 'prefetch buffer size')
+
+print(FLAGS.lr)
 
 # Read and organize training data
 in_dim = 13 # input dimension
@@ -69,7 +71,8 @@ y = tf.placeholder(shape=[None], dtype=tf.float32, name='target')
 # Define model
 y_1 = tf.layers.dense(x, FLAGS.no_hidden1, bias_initializer=tf.truncated_normal_initializer(stddev=0.1), kernel_initializer=tf.truncated_normal_initializer(stddev=0.1), activation=tf.sigmoid, name='layer_1')
 
-# ?
+# Add hidden layer
+y_2 = tf.layers.dense(y_1, FLAGS.no_hidden2, bias_initializer=tf.truncated_normal_initializer(stddev=0.1), kernel_initializer=tf.truncated_normal_initializer(stddev=0.1), activation=tf.sigmoid, name='layer_2')
 
 model_output = tf.layers.dense(y_2, 1, bias_initializer=tf.truncated_normal_initializer(stddev=0.1), kernel_initializer=tf.truncated_normal_initializer(stddev=0.1), activation=None, name='final_layer')
 model_output = tf.squeeze(model_output)
@@ -79,7 +82,7 @@ loss = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=model_outpu
 tf.summary.scalar('cross-entropy', loss)
 
 # Declare optimizer
-# ?
+my_opt = tf.train.AdamOptimizer(FLAGS.lr)
 train_step = my_opt.minimize(loss)
 
 # Map model output to binary predictions

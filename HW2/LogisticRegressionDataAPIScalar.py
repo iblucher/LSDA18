@@ -20,7 +20,7 @@ def _parse_line(line):
     content = tf.decode_csv(line, record_defaults)
     return tf.stack(content[:-1]), content[-1]
 
-ds = tf.data.TextLineDataset('../data/LSDA2017WeedCropTrain.csv')
+ds = tf.data.TextLineDataset('LSDAWeedCropTrain.csv')
 ds = ds.apply(tf.contrib.data.shuffle_and_repeat(10*FLAGS.batch_size, FLAGS.epochs))
 ds = ds.apply(tf.contrib.data.map_and_batch(map_func=_parse_line, batch_size=FLAGS.batch_size, num_parallel_batches=4))
 ds = ds.prefetch(FLAGS.prefetch)
@@ -32,7 +32,7 @@ ds_next_element = ds_iterator.get_next()
 ds_init_op = ds_iterator.make_initializer(ds)
 
 # Read test data
-data = np.genfromtxt('../data/LSDA2017WeedCropTest.csv', delimiter=',')
+data = np.genfromtxt('LSDAWeedCropTest.csv', delimiter=',')
 data_test = data[:,:-1]
 data_test_target = data[:,-1]
 
