@@ -10,7 +10,7 @@ FLAGS = flags.FLAGS
 flags.DEFINE_integer('batch_size', 100, 'batch size')
 flags.DEFINE_integer('prefetch', 1, 'prefetch buffer size')
 flags.DEFINE_integer('epochs', 5000, 'epochs')
-flags.DEFINE_integer('steps', 5000, 'update steps')  # using less steps is also OK
+flags.DEFINE_integer('steps', 7500, 'update steps')  # using less steps is also OK
 flags.DEFINE_float  ('lr', 0.0001, 'initial learning rate')
 
 # Import CIFAR10 data
@@ -23,7 +23,7 @@ ds = ds.batch(FLAGS.batch_size)
 ds = ds.prefetch(FLAGS.prefetch)
 
 # Resize test dataset
-ids = np.random.choice(len(data_test[0]), 2000, replace = False)
+ids = np.random.choice(len(data_test[0], 2000, replace = False)
 xtest = data_test[0][ids, :]
 ytest = data_test[1][ids]
 
@@ -117,5 +117,5 @@ with tf.Session() as sess:
         except tf.errors.OutOfRangeError:
             break
 
-    print("test accuracy %g"%accuracy.eval(feed_dict={x: xtest, y: ytest, keep_prob: 1.0}))
+    print("test accuracy %g"%accuracy.eval(feed_dict={x: data_test[0], y: data_test[1], keep_prob: 1.0}))
 
